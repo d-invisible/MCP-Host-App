@@ -1,0 +1,24 @@
+name: mcp-host
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: mcp-host-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mcphost
+      POSTGRES_PASSWORD: mcphost
+      POSTGRES_DB: mcphost
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mcphost -d mcphost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

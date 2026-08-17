@@ -1,0 +1,67 @@
+[project]
+name = "mcp-host-backend"
+version = "0.1.0"
+description = "MCP Host application backend: chat, LLM orchestration, OAuth, and MCP connectors"
+readme = "README.md"
+requires-python = ">=3.12"
+
+dependencies = [
+    # web
+    "fastapi>=0.141.1",
+    "uvicorn[standard]>=0.52.3",
+    "python-multipart>=0.0.20",
+    # data
+    "sqlalchemy>=2.0.52",
+    "asyncpg>=0.31.0",
+    "alembic>=1.19.1",
+    "pydantic>=2.13.4",
+    "pydantic-settings>=2.7.0",
+    # auth
+    "authlib>=1.7.2",
+    "pyjwt[crypto]>=2.10.1",
+    "argon2-cffi>=25.1.0",
+    "itsdangerous>=2.2.0",
+    # ai + mcp
+    "openai>=3.1.0",
+    "openai-agents>=0.21.1",
+    "mcp>=2.0.0",
+    # misc
+    "httpx>=0.28.1",
+    "structlog>=25.4.0",
+    "email-validator>=2.2.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+    "ruff>=0.14.0",
+    "mypy>=1.18.2",
+    "aiosqlite>=0.21.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
+ignore = [
+    # FastAPI declares dependencies as call expressions in defaults.
+    "B008",
+    # `str, Enum` is deliberate: it keeps enum values JSON-serializable for
+    # Pydantic responses and comparable to the plain strings SQLAlchemy stores.
+    "UP042",
+    # Discovery takes an explicit `timeout` that is handed to httpx, not used
+    # as a cancellation scope.
+    "ASYNC109",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["pydantic.mypy"]
+ignore_missing_imports = true

@@ -1,0 +1,38 @@
+# secrets — ignore every .env variant anywhere, then allow templates back in.
+# The broad rule matters: a new apps/<service>/.env must never depend on
+# someone remembering to add it here.
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+!.env.sample
+!**/.env.sample
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# node
+node_modules/
+.next/
+out/
+.turbo/
+next-env.d.ts
+
+# editors / os
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
+npm-debug.log*

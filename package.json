@@ -1,0 +1,21 @@
+{
+  "name": "mcp-host-web-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MCP host with pluggable connectors, OAuth, and a chat UI",
+  "workspaces": [
+    "apps/web"
+  ],
+  "scripts": {
+    "db:up": "docker compose -f infra/docker-compose.yml up -d",
+    "db:down": "docker compose -f infra/docker-compose.yml down",
+    "db:reset": "docker compose -f infra/docker-compose.yml down -v && docker compose -f infra/docker-compose.yml up -d",
+    "backend:dev": "cd apps/host-backend && uv run uvicorn app.main:app --reload --port 8000",
+    "backend:migrate": "cd apps/host-backend && uv run alembic upgrade head",
+    "backend:test": "cd apps/host-backend && uv run pytest -q",
+    "db:sql": "cd apps/host-backend && uv run python scripts/sql.py",
+    "db:psql": "docker exec -it mcp-host-postgres psql -U mcphost -d mcphost",
+    "web:dev": "npm run dev --workspace apps/web -- --port 3001",
+    "web:build": "npm run build --workspace apps/web"
+  }
+}
