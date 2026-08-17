@@ -22,8 +22,10 @@ dependencies = [
     "argon2-cffi>=25.1.0",
     "itsdangerous>=2.2.0",
     # ai + mcp
+    # Note: openai-agents is deliberately NOT a dependency. Its MCP client
+    # takes static headers and owns its own connection, so it cannot refresh an
+    # OAuth token mid-run or enforce per-user enable/disable. See docs/MCP.md.
     "openai>=3.1.0",
-    "openai-agents>=0.21.1",
     "mcp>=2.0.0",
     # misc
     "httpx>=0.28.1",

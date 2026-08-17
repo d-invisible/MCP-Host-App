@@ -1,0 +1,32 @@
+[project]
+name = "mcp-public-tools"
+version = "0.1.0"
+description = "Demo MCP server with no authentication — open utility tools"
+readme = "README.md"
+requires-python = ">=3.12"
+
+dependencies = [
+    "mcp>=2.0.0",
+    # Required, not optional: Windows and slim containers ship no system tz
+    # database, so ZoneInfo fails for every zone — including "UTC" — without it.
+    "tzdata>=2026.3",
+    "uvicorn[standard]>=0.52.3",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-asyncio>=1.2.0",
+    "ruff>=0.14.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

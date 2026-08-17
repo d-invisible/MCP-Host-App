@@ -20,6 +20,11 @@ and every third-party token is encrypted at rest.
 | AI       | OpenAI Responses API (also Azure AI Foundry) |
 | MCP      | MCP Python SDK v2, Streamable HTTP |
 
+The agent loop is written here rather than delegated to `openai-agents`: its
+MCP client takes static headers and owns its own connection, so it cannot
+refresh an OAuth token mid-run or enforce per-user enable/disable. See
+**[docs/MCP.md](docs/MCP.md)**.
+
 ---
 
 ## Quick start
@@ -41,6 +46,27 @@ npm run dev -- --port 3001
 ```
 
 Open <http://localhost:3001>, create an account, and go to **Connectors**.
+
+### Stopping
+
+If you started a service in a visible terminal, `Ctrl+C` is the clean way. For
+anything launched detached:
+
+```bash
+npm run stop                 # every app port; leaves Postgres running
+npm run stop:all             # also stops the Postgres container
+```
+
+Or one service at a time:
+
+```powershell
+./scripts/stop.ps1 -Port 8103
+```
+
+The script prefers the process that owns the port, and also kills any
+`--reload` supervisor holding it. If it reports a port still bound by a pid
+that no longer exists, the socket has been orphaned by a closed shell — close
+the terminal that launched it, or reboot to release the port.
 
 ### Configuration you must supply
 
@@ -152,6 +178,7 @@ apps/
 infra/              docker-compose, init-db.sql
 docs/
   PLAN.md           the six-day build sequence
+  MCP.md            client architecture, tool registry, and the agent loop
   AUTH.md           sessions, our OAuth server, and us as an OAuth client
   DATABASE.md       data layer, storage, migrations, running SQL
 ```

@@ -15,6 +15,9 @@
     "backend:test": "cd apps/host-backend && uv run pytest -q",
     "db:sql": "cd apps/host-backend && uv run python scripts/sql.py",
     "db:psql": "docker exec -it mcp-host-postgres psql -U mcphost -d mcphost",
+    "mcp:public-tools": "cd apps/mcp-servers/public-tools && uv run python src/server.py",
+    "stop": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/stop.ps1",
+    "stop:all": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/stop.ps1 -IncludeDatabase",
     "web:dev": "npm run dev --workspace apps/web -- --port 3001",
     "web:build": "npm run build --workspace apps/web"
   }
